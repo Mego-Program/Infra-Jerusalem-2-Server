@@ -8,6 +8,7 @@ const env = require('dotenv').config()
 
 const User = require('./db');
 const routes = require('./router');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;

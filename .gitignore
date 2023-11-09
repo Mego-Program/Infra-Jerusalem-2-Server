@@ -128,6 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+<<<<<<< HEAD
 
 #.env
+=======
+>>>>>>> f0d0ae3c3ad30c4e0a95db0c43e3490e188fbe02
 .env
