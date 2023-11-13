@@ -10,7 +10,11 @@ const User = require('./db');
 const routes = require('./router');
 require('dotenv').config();
 
+const account = require('./routers/account')
 const app = express();
+
+app.use('/account',account)
+
 const port = process.env.PORT || 3000;
 
 
@@ -22,7 +26,9 @@ app.use(bodyParser.json());
 
 routes(app, User, jwt, bcrypt);
 
-function verifyToken(req, res, next) {
+ function verifyToken(req, res, next) {
+  return next();
+
     const token = req.headers.authorization;
     if (!token) return res.status(403).send({ auth: false, message: 'No token provided.' });
   
@@ -36,7 +42,7 @@ function verifyToken(req, res, next) {
 
 
 
-app.get('/', (req, res) => {
+app.get('/', verifyToken ,verifyToken,(req, res) => {
     res.send('Hello Infra-jerusalem-2 Team! This is our Express server.');
 });
 
