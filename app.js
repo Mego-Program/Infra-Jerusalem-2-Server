@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { routes } from './routers/acconutsRouts.js';
+import { routes } from './routes/acconutsRouts.js';
 import { User } from './models/userModel.js';
 dotenv.config();
 
