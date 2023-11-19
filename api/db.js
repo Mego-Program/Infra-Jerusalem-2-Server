@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+import { connect, Schema, model } from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
+connect(process.env.MONGO_URL);
 
-mongoose.connect(process.env.MONGO_URL);
-
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     password: { type: String, required: true },
@@ -10,6 +11,6 @@ const UserSchema = new mongoose.Schema({
     userModel: {} 
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = model('User', UserSchema);
 
-module.exports = User;
+export default User;

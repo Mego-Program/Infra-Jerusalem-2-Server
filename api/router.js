@@ -1,4 +1,4 @@
-const { validationResult, body } = require("express-validator");
+import { validationResult, body } from "express-validator";
 
 function routes(app, User, jwt, bcrypt) {
   const signupValidation = [
@@ -96,4 +96,4 @@ function routes(app, User, jwt, bcrypt) {
   });
 }
 
-module.exports = routes;
+export default routes;
