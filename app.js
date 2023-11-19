@@ -8,6 +8,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { routes } from './routes/acconutsRouts.js';
 import { User } from './models/userModel.js';
+// import accountRouts from './routes/acconutsRouts.js'
 dotenv.config();
 
 const app = express();
@@ -34,7 +35,7 @@ function verifyToken(req, res, next) {
     });
   }
 
-
+  // app.use('/account', accountRouts);
 
 app.get('/', (req, res) => {
     res.send('Hello Infra-jerusalem-2 Team! This is our Express server.');
