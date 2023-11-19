@@ -7,7 +7,6 @@ import bodyParser from 'body-parser';
 const { verify } = jwt;
 const { json } = bodyParser;
 import cors from 'cors'; 
-//const env = require('dotenv').config()
 
 import User from './db.js';
 import routes from './router.js';
