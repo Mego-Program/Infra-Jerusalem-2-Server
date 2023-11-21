@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
-
+import { User } from "../models/userModel.js";
+import mongoose from "mongoose";
 
 export function signupController(User, jwt, bcrypt) {
   return async (req, res) => {
@@ -8,7 +9,7 @@ export function signupController(User, jwt, bcrypt) {
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const { firstName, lastName, password, email } = req.body;
+      const { firstName, lastName,userName, password, email } = req.body;
 
       const userMail = await User.findOne({ email: email });
       if (userMail) {
@@ -20,8 +21,10 @@ export function signupController(User, jwt, bcrypt) {
       const user = new User({
         firstName,
         lastName,
+        userName,
         password: hashedPassword,
         email,
+        
       });
 
       await user.save();
@@ -57,7 +60,7 @@ export function signinController(User, jwt, bcrypt) {
       }
 
       const token = jwt.sign(
-        { id: user._id, name: user.firstName + " " + user.lastName },
+        { id: user._id, name: user.userName},
         "secret",
         { expiresIn: 100000 }
       );

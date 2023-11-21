@@ -22,18 +22,6 @@ app.use(bodyParser.json());
 
 routes(app, User, jwt, bcrypt);
 
-function verifyToken(req, res, next) {
-    const token = req.headers.authorization;
-    if (!token) return res.status(403).send({ auth: false, message: 'No token provided.' });
-  
-    jwt.verify(token, 'secret', (err, decoded) => {
-      if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-  
-      req.userId = decoded.id;
-      next();
-    });
-  }
-
 
 
 app.get('/', (req, res) => {
@@ -44,3 +32,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+export default app
