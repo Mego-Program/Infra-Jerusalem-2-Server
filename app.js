@@ -6,8 +6,9 @@ import bcrypt from 'bcrypt';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { routes } from './routers/acconutsRouts.js';
+import { routes } from './routes/acconutsRouts.js';
 import { User } from './models/userModel.js';
+// import accountRouts from './routes/acconutsRouts.js'
 dotenv.config();
 
 const app = express();
@@ -21,7 +22,6 @@ app.use(bodyParser.json());
 
 
 routes(app, User, jwt, bcrypt);
-
 
 
 app.get('/', (req, res) => {
