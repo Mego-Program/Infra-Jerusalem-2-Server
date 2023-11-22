@@ -1,8 +1,7 @@
-import {getUserImg,getAllUsersInfo} from '../controllers/userController'
-import app from '../app';
+import {getUserImg,getAllUsersInfo} from '../controllers/userController.js'
 import { validationResult, body } from "express-validator";
 import { signinController, signupController } from "../controllers/acconuntsController.js";
-
+import app from '../index.js';
 
 function verifyToken(req, res, next) {
     const token = req.headers.authorization;
@@ -19,7 +18,7 @@ function verifyToken(req, res, next) {
 
 
 
-export function routes(app, User, jwt, bcrypt) {
+ function routes(app, User, jwt, bcrypt) {
   const signupValidation = [
     body("firstName").notEmpty().withMessage("First name is required"),
     body("lastName").notEmpty().withMessage("Last name is required"),
@@ -39,9 +38,15 @@ export function routes(app, User, jwt, bcrypt) {
   ];
 
   app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
-}
 
-app.get('/allUsersNameImg',getAllUsersInfo)
+
+  app.get('/allUsersNameImg',getAllUsersInfo)
 
 
 app.post('/userNameImg',verifyToken,getUserImg)
+}
+
+
+
+
+export default routes

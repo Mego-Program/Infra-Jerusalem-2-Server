@@ -40,4 +40,4 @@ const getAllUsersInfo = async (req, res) => {
     }
   };
 
-export  {getUserImg, getAllUsersInfo};
+export { getUserImg, getAllUsersInfo };
