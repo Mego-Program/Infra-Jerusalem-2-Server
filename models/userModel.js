@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { url } from "inspector";
+
 dotenv.config()
 
 
@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
     userName:{type:String, require:true, unique: true,},
     password: { type: String, required: true },
     email: { type: String, required: true },
-    img:{type:URL},
+    img:{type:String},
     userModel: {} 
 });
 
