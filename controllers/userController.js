@@ -1,7 +1,7 @@
 import { User } from "../models/userModel.js";
 import mongoose from "mongoose";
 
-const getUserImg = async (req, res) => {
+export const getUserImg = async (req, res) => {
   try {
     const { userName } = req.body;
     const user = await User.findOne({ userName: userName });
@@ -18,7 +18,7 @@ const getUserImg = async (req, res) => {
 };
 
 
-const getAllUsersInfo = async (req, res) => {
+export const getAllUsersInfo = async (req, res) => {
     try {
       const users = await User.find({}, 'userName firstName lastName img');
   
@@ -39,5 +39,25 @@ const getAllUsersInfo = async (req, res) => {
       return res.status(500).send({ error: "Internal server error" });
     }
   };
+const getAllUserDetails = async(req,res) =>{
 
-export { getUserImg, getAllUsersInfo };
+    try{
+    const {userName} = req.body
+    const user = await User.findOne({ userName: userName });
+    if (!user) {
+        return res.status(500).send({ auth: false, message: "user not exist" });
+      }
+      return res
+        .status(200)
+        .send(user);
+
+    }
+    catch(error){
+        console.log(error);
+    }
+
+
+}
+
+
+export default  getAllUserDetails ;

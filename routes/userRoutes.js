@@ -2,6 +2,8 @@ import {getUserImg,getAllUsersInfo} from '../controllers/userController.js'
 import { validationResult, body } from "express-validator";
 import { signinController, signupController } from "../controllers/acconuntsController.js";
 import app from '../index.js';
+import getAllUserDetails from '../controllers/userController.js'
+
 
 function verifyToken(req, res, next) {
     const token = req.headers.authorization;
@@ -38,6 +40,8 @@ function verifyToken(req, res, next) {
   ];
 
   app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
+
+  app.get('/userDetails',verifyToken, getAllUserDetails)
 
 
   app.get('/allUsersNameImg',getAllUsersInfo)
