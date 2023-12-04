@@ -5,10 +5,10 @@ export function routes(app, User, jwt, bcrypt) {
   const signupValidation = [
     body("firstName").notEmpty().withMessage("First name is required"),
     body("lastName").notEmpty().withMessage("Last name is required"),
+    body("userName").notEmpty().withMessage("userName name is required"),
     body("email").isEmail().withMessage("Invalid email address"),
     body("password")
-    .isStrongPassword() // incresed password safety as requested
-      // .isLength({ min: 8 })
+    .isStrongPassword().isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters long and include a mix of uppercase, lowercase, numbers, and symbols"),
   ];
 
@@ -17,8 +17,7 @@ export function routes(app, User, jwt, bcrypt) {
   const signinValidation = [
     body("email").isEmail().withMessage("Invalid email address"),
     body("password")
-    .isStrongPassword() // incresed password safety as requested
-      // .isLength({ min: 8 })
+    .isStrongPassword().isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters long and include a mix of uppercase, lowercase, numbers, and symbols"),
   ];
 
