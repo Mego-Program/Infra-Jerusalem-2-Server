@@ -3,16 +3,18 @@ import { validationResult, body } from "express-validator";
 import { signinController, signupController } from "../controllers/acconuntsController.js";
 import app from '../index.js';
 import getAllUserDetails from '../controllers/userController.js'
+import jwt from 'jsonwebtoken';
 
 
 function verifyToken(req, res, next) {
     const token = req.headers.authorization;
+    
     if (!token) return res.status(403).send({ auth: false, message: 'No token provided.' });
   
-    jwt.verify(token, 'secret', (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY_TOKEN , (err, decoded) => {
       if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
   
-      req.userName = decoded.userName;
+      req.body.email = decoded.email;
       next();
     });
   }
@@ -39,15 +41,15 @@ function verifyToken(req, res, next) {
       .withMessage("Password must be at least 8 characters long"),
   ];
 
-  app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
+app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
 
-  app.get('/userDetails',verifyToken, getAllUserDetails)
-
-
-  app.get('/allUsersNameImg',getAllUsersInfo)
+app.get('/userDetails',verifyToken, getAllUserDetails)
 
 
-app.post('/userNameImg',verifyToken,getUserImg)
+app.get('/allUsersNameImg',getAllUsersInfo)
+
+
+ app.post('/userNameImg',verifyToken,getUserImg)
 }
 
 

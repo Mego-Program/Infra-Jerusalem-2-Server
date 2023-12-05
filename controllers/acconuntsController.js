@@ -61,7 +61,7 @@ export function signinController(User, jwt, bcrypt) {
 
       const token = jwt.sign(
         { id: user._id, name: user.userName},
-        "secret",
+        process.env.SECRET_KEY_TOKEN,
         { expiresIn: 100000 }
       );
 
