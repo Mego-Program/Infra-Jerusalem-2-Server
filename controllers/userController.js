@@ -1,7 +1,7 @@
 import { User } from "../models/userModel.js";
 import mongoose from "mongoose";
 
-export const getUserImg = async (req, res) => {
+ const getUserImg = async (req, res) => {
   try {
     const { userName } = req.body;
     const user = await User.findOne({ userName: userName });
@@ -18,9 +18,10 @@ export const getUserImg = async (req, res) => {
 };
 
 
-export const getAllUsersInfo = async (req, res) => {
+ const getAllUsersInfo = async (req, res) => {
     try {
-      const users = await User.find({}, 'userName firstName lastName img');
+      const users = await User.find({});
+
   
       if (!users || users.length === 0) {
         return res.status(500).send({ auth: false, message: "No users found" });
@@ -39,17 +40,19 @@ export const getAllUsersInfo = async (req, res) => {
       return res.status(500).send({ error: "Internal server error" });
     }
   };
-const getAllUserDetails = async(req,res) =>{
-
+const getAllUserDetails = async( req,res) =>{
     try{
-    const {userName} = req.body
-    const user = await User.findOne({ userName: userName });
+    const {email} = req.body
+    console.log(email,"ygvbhunbvftcdrftvgby");
+    const user = await User.findOne({ email:email });
+    console.log(user);
     if (!user) {
         return res.status(500).send({ auth: false, message: "user not exist" });
       }
       return res
         .status(200)
         .send(user);
+
 
     }
     catch(error){
@@ -60,4 +63,4 @@ const getAllUserDetails = async(req,res) =>{
 }
 
 
-export default  getAllUserDetails ;
+export  {getAllUserDetails,getAllUsersInfo,getUserImg} ;

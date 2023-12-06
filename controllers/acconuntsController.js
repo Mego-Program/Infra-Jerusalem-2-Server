@@ -1,19 +1,24 @@
 import { validationResult } from "express-validator";
 import { User } from "../models/userModel.js";
 import mongoose from "mongoose";
+import { verifyEmail, sendCode, codeFunc } from "./submitEmail.js";
 
 export function signupController(User, jwt, bcrypt) {
   return async (req, res) => {
     try {
       const errors = validationResult(req);
+      console.log(errors);
+
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const { firstName, lastName,userName, password, email } = req.body;
+      const { firstName, lastName, userName, password, email } = req.body;
 
       const userMail = await User.findOne({ email: email });
       if (userMail) {
-        return res.status(500).send({ auth: false, message: "The email already exists" });
+        return res
+          .status(500)
+          .send({ auth: false, message: "The email already exists" });
       }
 
       const hashedPassword = bcrypt.hashSync(password, 8);
@@ -24,7 +29,6 @@ export function signupController(User, jwt, bcrypt) {
         userName,
         password: hashedPassword,
         email,
-        
       });
 
       await user.save();
@@ -32,7 +36,9 @@ export function signupController(User, jwt, bcrypt) {
       res.status(200).send({ auth: true });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ auth: false, message: "User registration failed." });
+      res
+        .status(500)
+        .send({ auth: false, message: "User registration failed." });
     }
   };
 }
@@ -47,7 +53,6 @@ export function signinController(User, jwt, bcrypt) {
       const { email, password } = req.body;
 
       const user = await User.findOne({ email: email });
-      console.log(user)
 
       if (!user) {
         return res.status(404).send({ auth: false, message: "User not found" });
@@ -56,7 +61,9 @@ export function signinController(User, jwt, bcrypt) {
       const isPasswordValid = bcrypt.compareSync(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(401).send({ auth: false, message: "Invalid password" });
+        return res
+          .status(401)
+          .send({ auth: false, message: "Invalid password" });
       }
 
       const token = jwt.sign(
@@ -72,5 +79,3 @@ export function signinController(User, jwt, bcrypt) {
     }
   };
 }
-
-
