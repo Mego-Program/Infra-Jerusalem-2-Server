@@ -67,9 +67,11 @@ export function signinController(User, jwt, bcrypt) {
           .send({ auth: false, message: "Invalid password" });
       }
 
-      const token = jwt.sign({ email: user.email }, "secret", {
-        expiresIn: 100000,
-      });
+      const token = jwt.sign(
+        { id: user._id, name: user.userName},
+        process.env.SECRET_KEY_TOKEN,
+        { expiresIn: 100000 }
+      );
 
       res.status(200).send({ auth: true, token });
     } catch (error) {
