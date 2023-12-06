@@ -3,6 +3,7 @@ import { User } from "../models/userModel.js";
 import mongoose from "mongoose";
 import { verifyEmail, sendCode, codeFunc } from "./submitEmail.js";
 
+
 export function signupController(User, jwt, bcrypt) {
   return async (req, res) => {
     try {
@@ -77,3 +78,5 @@ export function signinController(User, jwt, bcrypt) {
     }
   };
 }
+
+

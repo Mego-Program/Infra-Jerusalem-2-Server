@@ -1,9 +1,10 @@
-import {getUserImg,getAllUsersInfo,getAllUserDetails} from '../controllers/userController.js'
+import {getUserImg,getAllUsersInfo,getAllUserDetails,setImg} from '../controllers/userController.js'
 import { validationResult, body } from "express-validator";
 import { signinController, signupController } from "../controllers/acconuntsController.js";
 import app from '../index.js';
 import { verifyEmail,sendCode } from '../controllers/submitEmail.js';
 import jwt from 'jsonwebtoken';
+
 
 
 function verifyToken(req, res, next) {
@@ -55,6 +56,8 @@ app.get('/allusersnameimg',getAllUsersInfo)
  app.post('/sendemail',sendCode)
 
  app.post('/verifyemail',verifyEmail)
+
+ app.post('/uploadimg',verifyToken,setImg)
 }
 
 
