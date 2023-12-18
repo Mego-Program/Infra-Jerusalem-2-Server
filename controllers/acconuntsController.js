@@ -15,6 +15,20 @@ export function signupController(User, jwt, bcrypt) {
       }
       const { firstName, lastName, userName, password, email } = req.body;
 
+      const verifyMail = await Email.find({email:email})
+      console.log(verifyMail);
+      
+
+      if (!verifyMail){
+        return res.status(200).send({message:"the user details hes seen good please verify your email"})
+      }
+      else{
+        if (verifyMail.verify === false){
+          return res.status(200).send({message:"the user details hes seen good please verify your email"})
+
+        }
+      }
+
       
 
 
@@ -26,12 +40,7 @@ export function signupController(User, jwt, bcrypt) {
           .send({ auth: false, message: "The email already exists" });
       }
 
-      const verifyMail = await Email.findOne({email:email})
-      
 
-      if (!verifyMail){
-        return res.status(200).send({message:"the user details hes seen good plese verify your email"})
-      }
 
       const hashedPassword = bcrypt.hashSync(password, 8);
 
