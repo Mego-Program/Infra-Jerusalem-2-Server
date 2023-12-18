@@ -42,9 +42,9 @@ import mongoose from "mongoose";
   };
 const getAllUserDetails = async( req,res) =>{
     try{
-    const {email} = req.body
-    console.log(email,"ygvbhunbvftcdrftvgby");
-    const user = await User.findOne({ email:email });
+    const {name} = req.body
+    console.log(name,"ygvbhunbvftcdrftvgby");
+    const user = await User.findOne({ userName:name });
     console.log(user);
     if (!user) {
         return res.status(500).send({ auth: false, message: "user not exist" });
@@ -62,7 +62,7 @@ const getAllUserDetails = async( req,res) =>{
 
 }
  const setImg = async (req,res)=>{
-    const { userName,img } = req.body;
+    const { name,img } = req.body;
 
 
     try {

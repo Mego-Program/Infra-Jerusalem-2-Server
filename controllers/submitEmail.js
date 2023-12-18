@@ -39,8 +39,10 @@ const sendCode = async (req, res) => {
       subject: "Code",
       text: "The code is " + code,
     };
+    console.log(mailOptions);
 
     const info = await transporter.sendMail(mailOptions);
+    console.log(info);
     console.log("Email sent:", info.messageId);
     return res.status(200).send({"Email sent:": info.messageId})
   } catch (error) {
@@ -51,10 +53,13 @@ const sendCode = async (req, res) => {
 };
 const verifyEmail = async (req, res) => {
   const {email, code } = req.body;
+  console.log(req.body);
   try{
   const userMail = await Email.findOne({ email: email });
+  console.log(userMail,code);
 
-  if (userMail.code === code){
+
+  if (userMail.code == code){
     userMail.verify = true
     userMail.save()
     return res.status(200).send("email valid")
@@ -62,6 +67,7 @@ const verifyEmail = async (req, res) => {
 
   }
   else{
+    console.log("hghjhbu");
     return res.status(401).send("email not valid")
 
 

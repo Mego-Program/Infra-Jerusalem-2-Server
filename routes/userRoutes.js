@@ -15,7 +15,7 @@ function verifyToken(req, res, next) {
     jwt.verify(token, process.env.SECRET_KEY_TOKEN , (err, decoded) => {
       if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
   
-      req.body.email = decoded.email;
+      req.body.name = decoded.name;
       next();
     });
   }
