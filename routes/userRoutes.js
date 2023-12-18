@@ -1,9 +1,10 @@
-import {getUserImg,getAllUsersInfo,getAllUserDetails} from '../controllers/userController.js'
+import {getUserImg,getAllUsersInfo,getAllUserDetails,setImg} from '../controllers/userController.js'
 import { validationResult, body } from "express-validator";
 import { signinController, signupController } from "../controllers/acconuntsController.js";
 import app from '../index.js';
-
+import { verifyEmail,sendCode } from '../controllers/submitEmail.js';
 import jwt from 'jsonwebtoken';
+
 
 
 function verifyToken(req, res, next) {
@@ -11,7 +12,7 @@ function verifyToken(req, res, next) {
     
     if (!token) return res.status(403).send({ auth: false, message: 'No token provided.' });
   
-    jwt.verify(token, 'secret', (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY_TOKEN , (err, decoded) => {
       if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
   
       req.body.email = decoded.email;
@@ -26,13 +27,13 @@ function verifyToken(req, res, next) {
   const signupValidation = [
     body("firstName").notEmpty().withMessage("First name is required"),
     body("lastName").notEmpty().withMessage("Last name is required"),
+    body("userName").notEmpty().withMessage("Last name is required"),
     body("email").isEmail().withMessage("Invalid email address"),
     body("password")
       .isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters long"),
   ];
-
-  app.post("/signup", signupValidation, signupController(User, jwt, bcrypt));
+app.post("/signup", signupValidation, signupController(User, jwt, bcrypt));
 
   const signinValidation = [
     body("email").isEmail().withMessage("Invalid email address"),
@@ -50,6 +51,13 @@ app.get('/allusersnameimg',getAllUsersInfo)
 
 
  app.post('/userNameImg',verifyToken,getUserImg)
+
+
+ app.post('/sendemail',sendCode)
+
+ app.post('/verifyemail',verifyEmail)
+
+ app.post('/uploadimg',verifyToken,setImg)
 }
 
 

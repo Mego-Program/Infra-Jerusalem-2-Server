@@ -61,6 +61,31 @@ const getAllUserDetails = async( req,res) =>{
 
 
 }
+ const setImg = async (req,res)=>{
+    const { userName,img } = req.body;
 
 
-export  {getAllUserDetails,getAllUsersInfo,getUserImg} ;
+    try {
+        
+        const user = await User.findOne({ userName: userName });
+    
+        if (!user) {
+          return res.status(500).send({ auth: false, message: "user not exist" });
+        }
+        user.img = img
+
+        user.save()
+
+        return res
+          .status(200)
+          .send("img set sucssefuly");
+      } catch (error) {
+        console.log(error);
+      }
+
+
+    
+}
+
+
+export  {getAllUserDetails,getAllUsersInfo,getUserImg,setImg} ;
