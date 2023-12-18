@@ -2,7 +2,7 @@ import { validationResult } from "express-validator";
 import { User } from "../models/userModel.js";
 import mongoose from "mongoose";
 import { verifyEmail, sendCode, codeFunc } from "./submitEmail.js";
-
+import { Email } from "../models/emailModule.js";
 
 export function signupController(User, jwt, bcrypt) {
   return async (req, res) => {
@@ -15,11 +15,22 @@ export function signupController(User, jwt, bcrypt) {
       }
       const { firstName, lastName, userName, password, email } = req.body;
 
+      
+
+
+
       const userMail = await User.findOne({ email: email });
       if (userMail) {
         return res
           .status(500)
           .send({ auth: false, message: "The email already exists" });
+      }
+
+      const verifyMail = await Email.findOne({email:email})
+      
+
+      if (!verifyMail){
+        return res.status(200).send({message:"the user details hes seen good plese verify your email"})
       }
 
       const hashedPassword = bcrypt.hashSync(password, 8);

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 const EmailsSchema = new mongoose.Schema({
     email: { type: String, required: true },
     code: { type: Number, required: true },
+    verify:{type:Boolean,require:true}
 
   });
   

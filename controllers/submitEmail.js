@@ -20,6 +20,7 @@ const sendCode = async (req, res) => {
     const setEmail = new Email({
       email: email,
       code: code,
+      verify:false,
     });
     await setEmail.save();
 
@@ -41,7 +42,7 @@ const sendCode = async (req, res) => {
 
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent:", info.messageId);
-    return res.status(200).send("Email sent:", info.messageId)
+    return res.status(200).send({"Email sent:": info.messageId})
   } catch (error) {
     console.error("Error occurred:", error);
     return res.status(401).send("Email not send")
@@ -54,6 +55,8 @@ const verifyEmail = async (req, res) => {
   const userMail = await Email.findOne({ email: email });
 
   if (userMail.code === code){
+    userMail.verify = true
+    userMail.save()
     return res.status(200).send("email valid")
 
 
