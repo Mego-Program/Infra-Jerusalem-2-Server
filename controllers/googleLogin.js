@@ -4,7 +4,7 @@ import { User } from "../models/userModel.js";
 
 const googleLogin = async (req, res) => {
   try {
-    const {googleToken} = req.headers.authorization;
+    const googleToken = req.headers.authorization;
     
 
     if (googleToken) {
