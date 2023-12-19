@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
  const getUserImg = async (req, res) => {
   try {
-    const { userName } = req.body;
-    const user = await User.findOne({ userName: userName });
+    const { name } = req.body;
+    const user = await User.findOne({ userName: name });
 
     if (!user) {
       return res.status(500).send({ auth: false, message: "user not exist" });
@@ -67,7 +67,7 @@ const getAllUserDetails = async( req,res) =>{
 
     try {
         
-        const user = await User.findOne({ userName: userName });
+        const user = await User.findOne({ userName: name });
     
         if (!user) {
           return res.status(500).send({ auth: false, message: "user not exist" });
