@@ -4,7 +4,7 @@ import { signinController, signupController } from "../controllers/acconuntsCont
 import app from '../index.js';
 import { verifyEmail,sendCode } from '../controllers/submitEmail.js';
 import jwt from 'jsonwebtoken';
-
+import { googleLogin } from '../controllers/googleLogin.js';
 
 
 function verifyToken(req, res, next) {
@@ -43,6 +43,8 @@ app.post("/signup", signupValidation, signupController(User, jwt, bcrypt));
   ];
 
 app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
+
+app.post('/googlelogin',googleLogin)
 
 app.get('/userDetails',verifyToken, getAllUserDetails)
 
