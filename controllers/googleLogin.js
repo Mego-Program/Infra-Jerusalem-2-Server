@@ -4,7 +4,7 @@ import { User } from "../models/userModel.js";
 
 const googleLogin = async (req, res) => {
   try {
-    const googleToken = req.body;
+    const {googleToken} = req.body;
     
 
     if (googleToken) {
