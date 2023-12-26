@@ -8,7 +8,6 @@ import { validationResult, body } from "express-validator";
 import {
   signinController,
   signupController,
-  editProfileController
 } from "../controllers/acconuntsController.js";
 import app from "../index.js";
 import { verifyEmail, sendCode } from "../controllers/submitEmail.js";
@@ -54,15 +53,7 @@ function routes(app, User, jwt, bcrypt) {
 
   app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
 
-  const editProfileValidation = [
-    body("firstName").notEmpty().withMessage("First name is required"),
-    body("lastName").notEmpty().withMessage("Last name is required"),
-    body("password")
-      .isLength({ min: 8 })
-      .withMessage("Password must be at least 8 characters long"),
-  ];
-
-  app.post("/editProfile",editProfileValidation, verifyToken,  editProfileController(User, bcrypt));
+  app.post("/googlelogin", googleLogin);
 
   app.get("/userDetails", verifyToken, getAllUserDetails);
 
