@@ -39,6 +39,15 @@ function verifyToken(req, res, next) {
 
   app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
 
+  const editProfileValidation = [
+    body("firstName").notEmpty().withMessage("First name is required"),
+    body("lastName").notEmpty().withMessage("Last name is required"),
+    body("password")
+      .isLength({ min: 8 })
+      .withMessage("Password must be at least 8 characters long"),
+  ];
+
+  app.post("/editProfile", verifyToken, editProfileValidation, editProfileController(User, bcrypt));
 
   app.get('/allUsersNameImg',getAllUsersInfo)
 
