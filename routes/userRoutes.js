@@ -8,6 +8,7 @@ import { validationResult, body } from "express-validator";
 import {
   signinController,
   signupController,
+  editProfileController
 } from "../controllers/acconuntsController.js";
 import app from "../index.js";
 import { verifyEmail, sendCode } from "../controllers/submitEmail.js";
@@ -61,7 +62,7 @@ function routes(app, User, jwt, bcrypt) {
       .withMessage("Password must be at least 8 characters long"),
   ];
 
-  app.post("/editProfile", verifyToken, editProfileValidation, editProfileController(User, bcrypt));
+  app.post("/editProfile",editProfileValidation, verifyToken,  editProfileController(User, bcrypt));
 
   app.get("/userDetails", verifyToken, getAllUserDetails);
 

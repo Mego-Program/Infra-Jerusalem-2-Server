@@ -16,11 +16,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
-app.use(cors({
-  origin: ['https://infra-jerusalem-2.vercel.app', "http://localhost:5173"],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-}));app.use(json());
+app.use(cors())
+app.use(json());
 
 
 
