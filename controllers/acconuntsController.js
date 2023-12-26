@@ -97,3 +97,36 @@ export function signinController(User, jwt, bcrypt) {
     }
   };
 }
+
+
+export function editProfileController(User, bcrypt) {
+  return async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      const { firstName, lastName, img, password, email } = req.body;
+
+      const userMail = await User.find({ email: email });
+      if (userMail) {
+        return res.status(500).send({ auth: false, message: "The email already exists" });
+      }
+
+      const hashedPassword = bcrypt.hashSync(password, 8);
+
+        userMail.firstName = firstName,
+        userMail.lastName = lastName,
+        userMail.password = hashedPassword,
+        userMail.img = img ,
+      
+      await userMail.save();
+
+      res.status(200).send({ auth: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ auth: false, message: "User registration failed." });
+    }
+  };
+}
+
