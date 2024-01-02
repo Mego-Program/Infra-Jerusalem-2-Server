@@ -17,7 +17,12 @@ const sendCode = async (req, res) => {
         .status(500)
         .send({ auth: false, message: "The email already exists" });
     }
-    
+    const setEmail = new Email({
+      email: email,
+      code: code,
+      verify:false,
+    });
+    await setEmail.save();
 
 
     const transporter = nodemailer.createTransport({
