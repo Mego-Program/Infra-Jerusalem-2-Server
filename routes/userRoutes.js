@@ -62,6 +62,8 @@ function routes(app, User, jwt, bcrypt) {
       .withMessage("Password must be at least 8 characters long"),
   ];
 
+  app.post("/googlelogin", googleLogin);
+
   app.post("/editProfile", verifyToken, editProfileValidation, editProfileController(User, bcrypt));
 
   app.get("/userDetails", verifyToken, getAllUserDetails);
