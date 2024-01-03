@@ -8,6 +8,7 @@ import { validationResult, body } from "express-validator";
 import {
   signinController,
   signupController,
+  editProfileController
 } from "../controllers/acconuntsController.js";
 import app from "../index.js";
 import { verifyEmail, sendCode } from "../controllers/submitEmail.js";
@@ -20,7 +21,7 @@ function verifyToken(req, res, next) {
 
   if (!token)
     return res.status(403).send({ auth: false, message: "No token provided." });
-
+console.log(token);
   jwt.verify(token, process.env.SECRET_KEY_TOKEN, (err, decoded) => {
     if (err)
       return res

@@ -108,9 +108,10 @@ export function editProfileController(User, bcrypt) {
       }
       const { firstName, lastName, img, password, email } = req.body;
 
-      const userMail = await User.find({ email: email });
-      if (userMail) {
-        return res.status(500).send({ auth: false, message: "The email already exists" });
+      const userMail = await User.findOne({ email: email });
+      console.log(userMail);
+      if (!userMail) {
+        return res.status(500).send({ auth: false, message: "user not exist" });
       }
 
       const hashedPassword = bcrypt.hashSync(password, 8);
