@@ -1,4 +1,7 @@
 import { validationResult } from "express-validator";
+import { User } from "../models/userModel.js";
+import mongoose from "mongoose";
+import { verifyEmail, sendCode, codeFunc } from "./submitEmail.js";
 import { Email } from "../models/emailModule.js";
 
 export function signupController(User, jwt, bcrypt) {
@@ -12,25 +15,23 @@ export function signupController(User, jwt, bcrypt) {
       }
       const { firstName, lastName, userName, password, email } = req.body;
 
-      const verifyMail = await Email.find({ email: email });
+      const verifyMail = await Email.find({email:email})
       console.log(verifyMail);
+      
 
-      if (!verifyMail) {
-        return res
-          .status(200)
-          .send({
-            message: "the user details hes seen good please verify your email",
-          });
-      } else {
-        if (verifyMail.verify === false) {
-          return res
-            .status(200)
-            .send({
-              message:
-                "the user details hes seen good please verify your email",
-            });
+      if (!verifyMail){
+        return res.status(200).send({message:"the user details hes seen good please verify your email"})
+      }
+      else{
+        if (verifyMail.verify === false){
+          return res.status(200).send({message:"the user details hes seen good please verify your email"})
+
         }
       }
+
+      
+
+
 
       const userMail = await User.findOne({ email: email });
       if (userMail) {
@@ -38,6 +39,8 @@ export function signupController(User, jwt, bcrypt) {
           .status(500)
           .send({ auth: false, message: "The email already exists" });
       }
+
+
 
       const hashedPassword = bcrypt.hashSync(password, 8);
 
@@ -85,7 +88,7 @@ export function signinController(User, jwt, bcrypt) {
       }
 
       const token = jwt.sign(
-        { id: user._id, name: user.userName },
+        { id: user._id, name: user.userName},
         process.env.SECRET_KEY_TOKEN,
         { expiresIn: 100000 }
       );
