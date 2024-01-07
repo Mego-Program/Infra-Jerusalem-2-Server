@@ -134,3 +134,34 @@ export function editProfileController(User, bcrypt) {
   };
 }
 
+
+//============================
+
+export function editShortProfileController(User) {
+  return async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      const { firstName, lastName, email, img } = req.body;
+
+      const userMail = await User.findOne({ email: email });
+      console.log(userMail);
+      if (!userMail) {
+        return res.status(500).send({ auth: false, message: "user not exist" });
+      }
+console.log(img);
+        userMail.firstName = firstName,
+        userMail.lastName = lastName,
+        userMail.img = img ,
+      
+      await userMail.save();
+
+      res.status(200).send({ auth: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ auth: false, message: "User registration failed." });
+    }
+  };
+}

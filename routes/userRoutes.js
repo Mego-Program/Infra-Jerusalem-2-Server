@@ -8,7 +8,8 @@ import { validationResult, body } from "express-validator";
 import {
   signinController,
   signupController,
-  editProfileController
+  editProfileController,
+  editShortProfileController
 } from "../controllers/acconuntsController.js";
 import app from "../index.js";
 import { verifyEmail, sendCode } from "../controllers/submitEmail.js";
@@ -45,14 +46,15 @@ function routes(app, User, jwt, bcrypt) {
   ];
   app.post("/signup", signupValidation, signupController(User, jwt, bcrypt));
 
+
   const signinValidation = [
     body("email").isEmail().withMessage("Invalid email address"),
     body("password")
       .isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters long"),
   ];
-
   app.post("/signin", signinValidation, signinController(User, jwt, bcrypt));
+
 
   const editProfileValidation = [
     body("firstName").notEmpty().withMessage("First name is required"),
@@ -61,10 +63,19 @@ function routes(app, User, jwt, bcrypt) {
       .isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters long"),
   ];
+  app.post("/editProfile", verifyToken, editProfileValidation, editProfileController(User, bcrypt));
+
+
+//=============================
+  const editShortProfileValidation = [
+    body("firstName").notEmpty().withMessage("First name is required"),
+    body("lastName").notEmpty().withMessage("Last name is required"),
+  ];
+  app.post("/editShortProfile", verifyToken, editShortProfileValidation, editShortProfileController(User));
+//============================
+  
 
   app.post("/googlelogin", googleLogin);
-
-  app.post("/editProfile", verifyToken, editProfileValidation, editProfileController(User, bcrypt));
 
   app.get("/userDetails", verifyToken, getAllUserDetails);
 
